@@ -1,4 +1,4 @@
-# app/core/services.py
+# services.py
 from sqlalchemy.orm import Session
 from . import models
 from .database import Base, engine
@@ -7,24 +7,22 @@ from datetime import datetime
 # Create tables
 Base.metadata.create_all(bind=engine)
 
-# Service functions
+# Regulation CRUD
 
 def create_regulation(db: Session, regulation: models.RegulationCreate):
-    # Auto-link law logic placeholder
-    new_reg = models.Regulation(
-        regulation_name=regulation.regulation_name,
-        law_id=regulation.law_id,
-        description=regulation.description,
-        effective_date=regulation.effective_date,
-        expiry_date=regulation.expiry_date,
-        document_url=regulation.document_url,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow(),
-    )
-    db.add(new_reg)
+    db_reg = models.Regulation(**regulation.dict())
+    db.add(db_reg)
     db.commit()
-    db.refresh(new_reg)
-    # Record change history placeholder
-    return new_reg
+    db.refresh(db_reg)
+    # Add history
+    history = models.RegulationHistory(
+        regulation_id=db_reg.regulation_id,
+        changed_by=1,  # placeholder
+        change_type="CREATE",
+        change_data=str(regulation.dict()),
+    )
+    db.add(history)
+    db.commit()
+    return db_reg
 
-# Additional CRUD functions would be implemented similarly
+# Additional CRUD functions would follow similar pattern

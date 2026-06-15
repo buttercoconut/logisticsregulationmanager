@@ -1,14 +1,22 @@
 <template>
-  <router-view />
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script setup>
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import axios from 'axios';
-
-axios.defaults.baseURL = '/';
-
-createApp(App).use(router).mount('#app');
+// No script needed for root
 </script>
+
+<style>
+/* Global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+</style>

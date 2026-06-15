@@ -1,1 +1,5 @@
-# requirements.txt placeholder
+# requirements.txt
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
